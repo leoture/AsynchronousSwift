@@ -1,6 +1,6 @@
 # AsynchronousSwift
 
-[![CI Status](http://img.shields.io/travis/jordhan leoture/AsynchronousSwift.svg?style=flat)](https://travis-ci.org/jordhan leoture/AsynchronousSwift)
+
 [![Version](https://img.shields.io/cocoapods/v/AsynchronousSwift.svg?style=flat)](http://cocoapods.org/pods/AsynchronousSwift)
 [![License](https://img.shields.io/cocoapods/l/AsynchronousSwift.svg?style=flat)](http://cocoapods.org/pods/AsynchronousSwift)
 [![Platform](https://img.shields.io/cocoapods/p/AsynchronousSwift.svg?style=flat)](http://cocoapods.org/pods/AsynchronousSwift)
@@ -22,7 +22,7 @@ pod 'AsynchronousSwift'
 
 ## Author
 
-jordhan leoture, jleoture@octo.com
+jordhan leoture, jordhan.leoture@gmail.com
 
 ## License
 
