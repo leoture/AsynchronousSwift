@@ -1,0 +1,19 @@
+PODS:
+  - AsynchronousSwift (0.1.0)
+  - Nimble (7.0.3)
+
+DEPENDENCIES:
+  - AsynchronousSwift (from `../`)
+  - Nimble (~> 7.0.2)
+
+EXTERNAL SOURCES:
+  AsynchronousSwift:
+    :path: ../
+
+SPEC CHECKSUMS:
+  AsynchronousSwift: 742eb80dc99c108bea3ab4886a80bf8b8249c682
+  Nimble: 7f5a9c447a33002645a071bddafbfb24ea70e0ac
+
+PODFILE CHECKSUM: 41717ef729bc9cac041be7e85cfbd92297c38183
+
+COCOAPODS: 1.4.0

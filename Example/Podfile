@@ -1,12 +1,12 @@
 use_frameworks!
+platform :ios, '9.0'
 
 target 'AsynchronousSwift_Example' do
   pod 'AsynchronousSwift', :path => '../'
-
+  
   target 'AsynchronousSwift_Tests' do
     inherit! :search_paths
 
-    pod 'Quick', '~> 1.2.0'
     pod 'Nimble', '~> 7.0.2'
   end
 end
