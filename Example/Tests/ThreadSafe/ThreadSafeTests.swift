@@ -192,11 +192,16 @@ class ThreadSafeTests: XCTestCase {
     let threadSafe = ThreadSafe<Int>(2)
 
     // When
-    var value: Int?
-    threadSafe.onChange(on: .global(qos: .utility)) { value = $0 }
+    var oldValue: Int?
+    var newValue: Int?
+    threadSafe.onChange(on: .global(qos: .utility)) {
+      oldValue = $0
+      newValue = $1
+    }
 
     // Then
-    expect(value).toEventually(beNil())
+    expect(oldValue).toEventually(beNil())
+    expect(newValue).toEventually(beNil())
   }
 
   func test_onChange_callbackShouldBeCalledOnCorrectQueueAfterChangeVariable() {
@@ -206,7 +211,7 @@ class ThreadSafeTests: XCTestCase {
 
     // When
     var queueLabel: String?
-    threadSafe.onChange(on: queue) { _ in queueLabel = DispatchQueue.currentQueueLabel }
+    threadSafe.onChange(on: queue) { _, _ in queueLabel = DispatchQueue.currentQueueLabel }
     threadSafe.value = 3
 
     // Then
@@ -220,7 +225,7 @@ class ThreadSafeTests: XCTestCase {
 
     // When
     var queueLabel: String?
-    threadSafe.onChange { _ in queueLabel = DispatchQueue.currentQueueLabel }
+    threadSafe.onChange { _, _ in queueLabel = DispatchQueue.currentQueueLabel }
     threadSafe.value = 3
 
     // Then
@@ -229,15 +234,21 @@ class ThreadSafeTests: XCTestCase {
 
   func test_onChange_callbackShouldBeCalledWithCorrectValue() {
     // Given
-    let expectedObject = NSObject()
-    let threadSafe = ThreadSafe<NSObject>(NSObject())
+    let newExpectedObject = NSObject()
+    let oldExpectedObject = NSObject()
+    let threadSafe = ThreadSafe<NSObject>(oldExpectedObject)
 
     // When
-    var object: NSObject?
-    threadSafe.onChange { object = $0 }
-    threadSafe.value = expectedObject
+    var object1: NSObject?
+    var object2: NSObject?
+    threadSafe.onChange {
+      object1 = $0
+      object2 = $1
+    }
+    threadSafe.value = newExpectedObject
 
     // Then
-    expect(object).toEventually(equal(expectedObject))
+    expect(object1).toEventually(beIdenticalTo(oldExpectedObject))
+    expect(object2).toEventually(beIdenticalTo(newExpectedObject))
   }
 }

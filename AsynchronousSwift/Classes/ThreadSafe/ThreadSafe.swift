@@ -9,7 +9,7 @@ private let internalQueueLabel = "AsynchronousSwift.ThreadSafe"
 
 public class ThreadSafe<VariableType> {
   fileprivate var wrapper: Wrapper<VariableType>
-  private var callbacks: [(VariableType) -> Void]
+  private var callbacks: [(VariableType, VariableType) -> Void]
   public let readOnly: ThreadSafeReadOnly<VariableType>
   public let readAndWrite: ThreadSafeReadAndWrite<VariableType>
 
@@ -17,7 +17,7 @@ public class ThreadSafe<VariableType> {
     let internalQueue = DispatchQueue(label: internalQueueLabel, attributes: .concurrent)
     let _wrapper: Wrapper<VariableType> = Wrapper(value: variable)
     wrapper = _wrapper
-    callbacks = [(VariableType) -> Void]()
+    callbacks = [(VariableType, VariableType) -> Void]()
     readOnly = ThreadSafeReadOnly<VariableType>(internalQueue: internalQueue, wrapper: _wrapper)
     readAndWrite = ThreadSafeReadAndWrite<VariableType>(internalQueue: internalQueue, wrapper: _wrapper)
   }
@@ -32,14 +32,15 @@ public class ThreadSafe<VariableType> {
     }
     set {
       readAndWrite.async { value in
+        let oldValue = value
         value = newValue
-        self.callbacks.forEach { $0(newValue) }
+        self.callbacks.forEach { $0(oldValue, newValue) }
       }
     }
   }
 
-  public func onChange(on queue: DispatchQueue = .global(), _ closure: @escaping (VariableType) -> Void) {
-    callbacks.append({ value in queue.async { closure(value) } })
+  public func onChange(on queue: DispatchQueue = .global(), _ closure: @escaping (VariableType, VariableType) -> Void) {
+    callbacks.append({ oldValue, newValue in queue.async { closure(oldValue, newValue) } })
   }
 }
 

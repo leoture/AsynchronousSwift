@@ -18,7 +18,7 @@ public class Promise<ComputableType> {
 
     let closure: ThreadSafe<ResolveClosure?> = ThreadSafe(nil)
     self.closure = closure
-    self.closure.onChange { _ in semaphore.signal() }
+    self.closure.onChange { _, _ in semaphore.signal() }
 
     self.future = Future<ComputableType>(qos: qos) {
       semaphore.wait()
