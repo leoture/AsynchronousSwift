@@ -29,7 +29,8 @@ threadSafeArray <- [1]
 
 #### OnChange
 ```swift
-threadSafeArray.onChange(on: .global(qos: .background)) { newValue in
+threadSafeArray.onChange(on: .global(qos: .background)) { oldValue, newValue in
+   print("Old Array : \(oldValue)")
    print("New Array : \(newValue)")
  }
 ```
@@ -70,7 +71,7 @@ let future = promise.future
 
 future.then { value in /* code */ }
       .then(qos: .background) { value in /* code */ }
-      .catch{ error in /* code */ }
+      .catch { error in /* code */ }
       .finally { /* code */ }
 
 let result = future.sync { value in return /* code */ }
